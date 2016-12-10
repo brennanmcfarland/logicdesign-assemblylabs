@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=tutorial.asm
+SOURCEFILES_QUOTED_IF_SPACED=12a.asm
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/tutorial.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/tutorial.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/12a.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/12a.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/tutorial.o
+OBJECTFILES=${OBJECTDIR}/12a.o
 
 # Source Files
-SOURCEFILES=tutorial.asm
+SOURCEFILES=12a.asm
 
 
 CFLAGS=
@@ -82,22 +82,22 @@ MP_LINKER_DEBUG_OPTION=
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: assemble
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/tutorial.o: tutorial.asm  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/12a.o: 12a.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/tutorial.o.d 
-	@${RM} ${OBJECTDIR}/tutorial.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/tutorial.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_SIMULATOR=1 -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/tutorial.lst\\\" -e\\\"${OBJECTDIR}/tutorial.err\\\" $(ASM_OPTIONS)   -o\\\"${OBJECTDIR}/tutorial.o\\\" \\\"tutorial.asm\\\" 
-	@${DEP_GEN} -d "${OBJECTDIR}/tutorial.o"
-	@${FIXDEPS} "${OBJECTDIR}/tutorial.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	@${RM} ${OBJECTDIR}/12a.o.d 
+	@${RM} ${OBJECTDIR}/12a.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/12a.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_SIMULATOR=1 -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/12a.lst\\\" -e\\\"${OBJECTDIR}/12a.err\\\" $(ASM_OPTIONS)   -o\\\"${OBJECTDIR}/12a.o\\\" \\\"12a.asm\\\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/12a.o"
+	@${FIXDEPS} "${OBJECTDIR}/12a.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
 else
-${OBJECTDIR}/tutorial.o: tutorial.asm  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/12a.o: 12a.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/tutorial.o.d 
-	@${RM} ${OBJECTDIR}/tutorial.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/tutorial.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/tutorial.lst\\\" -e\\\"${OBJECTDIR}/tutorial.err\\\" $(ASM_OPTIONS)   -o\\\"${OBJECTDIR}/tutorial.o\\\" \\\"tutorial.asm\\\" 
-	@${DEP_GEN} -d "${OBJECTDIR}/tutorial.o"
-	@${FIXDEPS} "${OBJECTDIR}/tutorial.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	@${RM} ${OBJECTDIR}/12a.o.d 
+	@${RM} ${OBJECTDIR}/12a.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/12a.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/12a.lst\\\" -e\\\"${OBJECTDIR}/12a.err\\\" $(ASM_OPTIONS)   -o\\\"${OBJECTDIR}/12a.o\\\" \\\"12a.asm\\\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/12a.o"
+	@${FIXDEPS} "${OBJECTDIR}/12a.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
 endif
 

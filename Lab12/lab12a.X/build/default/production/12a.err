@@ -1,0 +1,2 @@
+Error[105]   /home/sir/MPLABXProjects/logicdesign-assemblylabs/Lab12/lab12a.X/12a.asm 33 : Cannot open file (Include File "P16F84A.INC" not found)
+Warning[205] /home/sir/MPLABXProjects/logicdesign-assemblylabs/Lab12/lab12a.X/12a.asm 101 : Found directive in column 1. (END)
