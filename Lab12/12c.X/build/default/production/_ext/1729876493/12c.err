@@ -1,0 +1,2 @@
+Error[105]   ../lab12b.X/12c.asm 33 : Cannot open file (Include File "P16F84A.INC" not found)
+Warning[205] ../lab12b.X/12c.asm 101 : Found directive in column 1. (END)

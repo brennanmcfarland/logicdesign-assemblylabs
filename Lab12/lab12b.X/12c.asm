@@ -30,9 +30,9 @@
 ;**********************************************************************
 
 	list      p=16F84A            ; list directive to define processor
-	#include <p16F84A.inc>        ; processor specific variable definitions
+	#include <P16F84A.INC>        ; processor specific variable definitions
 
-	__CONFIG   _CP_OFF & _WDT_OFF & _PWRTE_ON & _RC_OSC
+;	__CONFIG   _CP_OFF & _WDT_OFF & _PWRTE_ON & _RC_OSC
 
 ; '__CONFIG' directive is used to embed configuration data within .asm file.
 ; The lables following the directive are located in the respective .inc file.

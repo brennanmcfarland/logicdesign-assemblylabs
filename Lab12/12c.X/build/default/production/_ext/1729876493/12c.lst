@@ -1,4 +1,4 @@
-MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-10-2016  13:12:03         PAGE  1
+MPASM 5.61               ../LAB12B.X/12C.ASM   12-10-2016  13:10:42         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -36,14 +36,10 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00030 ;**********************************************************************
                       00031 
                       00032         list      p=16F84A            ; list directive to define processor
-Error[105]  : Cannot open file (Include File "p16F84A.inc" not found)
-                      00033         #include <p16F84A.inc>        ; processor specific variable definitions
+Error[105]  : Cannot open file (Include File "P16F84A.INC" not found)
+                      00033         #include <P16F84A.INC>        ; processor specific variable definitions
                       00034 
-Error[113]  : Symbol not previously defined (_CP_OFF)
-Error[113]  : Symbol not previously defined (_WDT_OFF)
-Error[113]  : Symbol not previously defined (_PWRTE_ON)
-Error[113]  : Symbol not previously defined (_RC_OSC)
-2007   0000           00035         __CONFIG   _CP_OFF & _WDT_OFF & _PWRTE_ON & _RC_OSC
+                      00035 ;       __CONFIG   _CP_OFF & _WDT_OFF & _PWRTE_ON & _RC_OSC
                       00036 
                       00037 ; '__CONFIG' directive is used to embed configuration data within .asm file.
                       00038 ; The lables following the directive are located in the respective .inc file.
@@ -57,16 +53,16 @@ Error[113]  : Symbol not previously defined (_RC_OSC)
                       00046 ;DVAR2         EQU     0x10
                       00047 
                       00048 ;**********************************************************************
-MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-10-2016  13:12:03         PAGE  2
+                      00049 ;               ORG     0x000             ; processor reset vector
+                      00050 ;               goto    Main              ; go to beginning of program
+                      00051 
+                      00052 
+MPASM 5.61               ../LAB12B.X/12C.ASM   12-10-2016  13:10:42         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00049 ;               ORG     0x000             ; processor reset vector
-                      00050 ;               goto    Main              ; go to beginning of program
-                      00051 
-                      00052 
                       00053 ;               ORG     0x004             ; interrupt vector location
                       00054 ;               movwf   w_temp            ; save off current W register contents
                       00055 ;               movf    STATUS,w          ; move status register into W register
@@ -116,14 +112,8 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00099 ;    return
                       00100 
 Warning[205]: Found directive in column 1. (END)
-MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-10-2016  13:12:03         PAGE  3
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-0000                  00101 END ; directive 'end of program'
-MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-10-2016  13:12:03         PAGE  4
+                      00101 END ; directive 'end of program'
+MPASM 5.61               ../LAB12B.X/12C.ASM   12-10-2016  13:10:42         PAGE  3
 
 
 SYMBOL TABLE
@@ -131,7 +121,7 @@ SYMBOL TABLE
 
 __16F84A                          00000001
 
-Errors   :     5
+Errors   :     1
 Warnings :     1 reported,     0 suppressed
 Messages :     0 reported,     0 suppressed
 

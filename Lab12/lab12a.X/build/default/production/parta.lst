@@ -1,0 +1,127 @@
+MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-10-2016  13:16:21         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;**********************************************************************
+                      00002 ;   This file is a basic code template for assembly code generation   *
+                      00003 ;   on the PIC16F84A. This file contains the basic code               *
+                      00004 ;   building blocks to build upon.                                    *
+                      00005 ;                                                                     *
+                      00006 ;   Refer to the MPASM User's Guide for additional information on     *
+                      00007 ;   features of the assembler (Document DS33014).                     *
+                      00008 ;                                                                     *
+                      00009 ;   Refer to the respective PIC data sheet for additional             *
+                      00010 ;   information on the instruction set.                               *
+                      00011 ;                                                                     *
+                      00012 ;**********************************************************************
+                      00013 ;                                                                     *
+                      00014 ;    Filename:      parta.asm                                      *
+                      00015 ;    Date:          6 December 2016                                                          *
+                      00016 ;    File Version:  A                                                 *
+                      00017 ;                                                                     *
+                      00018 ;    Author:        Kimberly Almcrantz                                                    *
+                      00019 ;    Company:                                                         *
+                      00020 ;                                                                     *
+                      00021 ;                                                                     *
+                      00022 ;**********************************************************************
+                      00023 ;                                                                     *
+                      00024 ;    Files Required: P16F84A.INC                                      *
+                      00025 ;                                                                     *
+                      00026 ;**********************************************************************
+                      00027 ;                                                                     *
+                      00028 ;    Notes:                                                           *
+                      00029 ;                                                                     *
+                      00030 ;**********************************************************************
+                      00031 
+                      00032         list      p=16F84A            ; list directive to define processor
+Error[105]  : Cannot open file (Include File "p16F84A.inc" not found)
+                      00033         #include <p16F84A.inc>        ; processor specific variable definitions
+                      00034 
+Error[113]  : Symbol not previously defined (_CP_OFF)
+Error[113]  : Symbol not previously defined (_WDT_OFF)
+Error[113]  : Symbol not previously defined (_PWRTE_ON)
+Error[113]  : Symbol not previously defined (_RC_OSC)
+2007   0000           00035         __CONFIG   _CP_OFF & _WDT_OFF & _PWRTE_ON & _RC_OSC
+                      00036 
+                      00037 ; '__CONFIG' directive is used to embed configuration data within .asm file.
+                      00038 ; The lables following the directive are located in the respective .inc file.
+                      00039 ; See respective data sheet for additional information on configuration word.
+                      00040 
+                      00041 ;***** VARIABLE DEFINITIONS
+  0000000C            00042 w_temp        EQU     0x0C        ; variable used for context saving
+  0000000D            00043 status_temp   EQU     0x0D        ; variable used for context saving
+                      00044 
+                      00045 ;**********************************************************************
+                      00046                 ORG     0x000             ; processor reset vector
+0000   2???           00047                 goto    Main              ; go to beginning of program
+                      00048 
+MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-10-2016  13:16:21         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00049 
+                      00050                 ORG     0x004             ; interrupt vector location
+0004   008C           00051                 movwf   w_temp            ; save off current W register contents
+Error[113]  : Symbol not previously defined (STATUS)
+0005   0800           00052                 movf    STATUS,w          ; move status register into W register
+0006   008D           00053                 movwf   status_temp       ; save off contents of STATUS register
+                      00054 
+                      00055 
+                      00056 ; isr code can go here or be located as a call subroutine elsewhere
+                      00057 
+                      00058 
+0007   080D           00059                 movf    status_temp,w     ; retrieve copy of STATUS register
+Error[113]  : Symbol not previously defined (STATUS)
+0008   0080           00060                 movwf   STATUS            ; restore pre-isr STATUS register contents
+0009   0E8C           00061                 swapf   w_temp,f
+000A   0E0C           00062                 swapf   w_temp,w          ; restore pre-isr W register contents
+000B   0009           00063                 retfie                    ; return from interrupt
+                      00064 
+                      00065 
+                      00066 ; program code goes here
+000C                  00067 Main
+000C   0103           00068     clrw;
+000D   3E01           00069     addlw 1;
+000E   3E01           00070     addlw 1;
+000F   3E01           00071     addlw 1;
+0010   3E01           00072     addlw 1;
+0011   3E01           00073     addlw 1;
+0012   3E01           00074     addlw 1;
+0013   3E01           00075     addlw 1;
+0014   3E01           00076     addlw 1;
+0015   3E01           00077     addlw 1;
+0016   3E01           00078     addlw 1;
+                      00079     
+0017   3EFD           00080     addlw -3;
+0018   3EFD           00081     addlw -3;
+0019   3EFD           00082     addlw -3;
+001A   3EFD           00083     addlw -3;
+                      00084     
+001B   3A01           00085     xorlw 1;
+                      00086     
+Warning[207]: Found label after column 1. (fin)
+001C                  00087     fin:
+001C   2???           00088         goto fin;
+Warning[205]: Found directive in column 1. (END)
+0000                  00089 END ; directive 'end of program'
+MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-10-2016  13:16:21         PAGE  3
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+Main                              0000000C
+__16F84A                          00000001
+fin                               0000001C
+status_temp                       0000000D
+w_temp                            0000000C
+
+Errors   :     7
+Warnings :     2 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+

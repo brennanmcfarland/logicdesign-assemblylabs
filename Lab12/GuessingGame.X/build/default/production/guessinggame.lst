@@ -1,0 +1,346 @@
+MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-16-2016  14:13:17         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 
+                      00002         list      p=16F84A            ; list directive to define processor
+Error[105]  : Cannot open file (Include File "p16F84A.inc" not found)
+                      00003         #include <p16F84A.inc>        ; processor specific variable definitions
+                      00004 
+Error[113]  : Symbol not previously defined (_CP_OFF)
+Error[113]  : Symbol not previously defined (_WDT_OFF)
+Error[113]  : Symbol not previously defined (_PWRTE_ON)
+Error[113]  : Symbol not previously defined (_RC_OSC)
+2007   0000           00005         __CONFIG   _CP_OFF & _WDT_OFF & _PWRTE_ON & _RC_OSC
+                      00006 
+                      00007 ; '__CONFIG' directive is used to embed configuration data within .asm file.
+                      00008 ; The lables following the directive are located in the respective .inc file.
+                      00009 ; See respective data sheet for additional information on configuration word.
+                      00010 
+                      00011 ;***** VARIABLE DEFINITIONS
+  0000000C            00012 w_temp        EQU     0x0C        ; variable used for context saving
+  0000000D            00013 status_temp   EQU     0x0D        ; variable used for context saving
+  0000000E            00014 COUNT         EQU     0x0E
+  0000000F            00015 DVAR          EQU     0x0F
+  00000010            00016 DVAR2         EQU     0x10
+  00000011            00017 octr          EQU     0x11      ; outer-loop counter for delays
+  00000012            00018 ictr          EQU     0x12      ; inner-loop counter for delays
+Error[113]  : Symbol not previously defined (RA0)
+  00000000            00019 G1            EQU     RA0
+Error[113]  : Symbol not previously defined (RA1)
+  00000000            00020 G2            EQU     RA1
+Error[113]  : Symbol not previously defined (RA2)
+  00000000            00021 G3            EQU     RA2
+Error[113]  : Symbol not previously defined (RA3)
+  00000000            00022 G4            EQU     RA3
+Error[113]  : Symbol not previously defined (RB0)
+  00000000            00023 L1            EQU     RB0
+Error[113]  : Symbol not previously defined (RB1)
+  00000000            00024 L2            EQU     RB1
+Error[113]  : Symbol not previously defined (RB2)
+  00000000            00025 L3            EQU     RB2
+Error[113]  : Symbol not previously defined (RB3)
+  00000000            00026 L4            EQU     RB3
+Error[113]  : Symbol not previously defined (RB7)
+  00000000            00027 ERR           EQU     RB7
+                      00028 
+                      00029 ;**********************************************************************
+                      00030                 ORG     0x000             ; processor reset vector
+0000   2???           00031                 goto    Main              ; go to beginning of program
+                      00032 
+                      00033 
+                      00034                 ORG     0x004             ; interrupt vector location
+0004   008C           00035                 movwf   w_temp            ; save off current W register contents
+Error[113]  : Symbol not previously defined (STATUS)
+0005   0800           00036                 movf    STATUS,w          ; move status register into W register
+0006   008D           00037                 movwf   status_temp       ; save off contents of STATUS register
+                      00038 
+MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-16-2016  14:13:17         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00039 
+                      00040 ; isr code can go here or be located as a call subroutine elsewhere
+                      00041 
+                      00042 
+0007   080D           00043                 movf    status_temp,w     ; retrieve copy of STATUS register
+Error[113]  : Symbol not previously defined (STATUS)
+0008   0080           00044                 movwf   STATUS            ; restore pre-isr STATUS register contents
+0009   0E8C           00045                 swapf   w_temp,f
+000A   0E0C           00046                 swapf   w_temp,w          ; restore pre-isr W register contents
+000B   0009           00047                 retfie                    ; return from interrupt
+                      00048 
+                      00049 
+                      00050 ; program code goes here
+000C                  00051 Main
+000C   0103           00052     clrw
+Error[113]  : Symbol not previously defined (PORTB)
+000D   0080           00053     movwf PORTB     ; clear PORTB
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (RP0)
+000E   1400           00054     bsf STATUS, RP0 ; switch to register bank 1
+Error[113]  : Symbol not previously defined (TRISB)
+000F   0080           00055     movwf TRISB     ; configure PORTB as all outputs
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (RP0)
+0010   1000           00056     bcf STATUS, RP0 ; switch to register bank 0
+                      00057 
+0011                  00058 S1 ;S1 state
+                      00059     ;turn on only L1
+0011   3071           00060     movlw 0x71 ;binary 01110001
+Error[113]  : Symbol not previously defined (PORTB)
+0012   0580           00061     andwf PORTB, 1 ;bitmask PORTB storing result in registers to clear lights
+Error[113]  : Symbol not previously defined (PORTB)
+0013   1400           00062     bsf PORTB, L1 ;turn on L1
+Warning[207]: Found label after column 1. (delaysec)
+0014                  00063     delaysec
+                      00064     ;if only G1 is active, go to SOK
+0014   300F           00065     movlw 0x0F ;binary 00001111
+Error[113]  : Symbol not previously defined (PORTA)
+0015   0500           00066     andwf PORTA, 0 ;bitmask PORTA storing result in wd
+0016   3A01           00067     xorlw 0x01 ;xor with 00000001 to see if only G1 active
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+0017   1800           00068     btfsc STATUS, Z ;if they are equal, to to SOK
+0018   2???           00069         goto SOK
+                      00070     ;otherwise, if no input active, go to S2
+0019   300F           00071     movlw 0x0F ;binary 00001111
+Error[113]  : Symbol not previously defined (PORTA)
+001A   0500           00072     andwf PORTA, 0 ;bitmask PORTA storing result in wd
+001B   3A00           00073     xorlw 0x00 ;xor with 00000000 to see if no inputs active
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+001C   1800           00074     btfsc STATUS, Z ;if they are equal, go to SOK
+001D   2???           00075         goto SOK
+MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-16-2016  14:13:17         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00076     ;otherwise go to SERR
+001E   2???           00077     goto SERR
+                      00078 
+001F                  00079 S2 ;S2 state
+                      00080     ;turn on only L2
+001F   3072           00081     movlw 0x72 ;binary 01110010
+Error[113]  : Symbol not previously defined (PORTB)
+0020   0580           00082     andwf PORTB, 1 ;bitmask PORTB storing result in registers to clear lights
+Error[113]  : Symbol not previously defined (PORTB)
+0021   1400           00083     bsf PORTB, L2 ;turn on L2
+Warning[207]: Found label after column 1. (delaysec)
+Error[116]  : Address label duplicated or different in second pass (delaysec)
+0022                  00084     delaysec
+                      00085     ;if only G2 is active, go to SOK
+0022   300F           00086     movlw 0x0F ;binary 00001111
+Error[113]  : Symbol not previously defined (PORTA)
+0023   0500           00087     andwf PORTA, 0 ;bitmask PORTA storing result in wd
+0024   3A02           00088     xorlw 0x02 ;xor with 00000010 to see if only G2 active
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+0025   1800           00089     btfsc STATUS, Z ;if they are equal, go to SOK
+0026   2???           00090         goto SOK
+                      00091     ;otherwise, if no input is active, go to S3
+0027   300F           00092     movlw 0x0F ;binary 00001111
+Error[113]  : Symbol not previously defined (PORTA)
+0028   0500           00093     andwf PORTA, 0 ;bitmask PORTA storing result in wd
+0029   3A00           00094     xorlw 0x00 ;xor with 0000 to see if no inputs active
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+002A   1800           00095     btfsc STATUS, Z ;if they are equal, go to S3
+002B   2???           00096         goto S3
+                      00097     ;otherwise go to SERR
+002C   2???           00098     goto SERR
+002D                  00099 S3 ;S3 state
+                      00100     ;turn on only L3
+002D   3074           00101     movlw 0x74 ;binary 01110100
+Error[113]  : Symbol not previously defined (PORTB)
+002E   0580           00102     andwf PORTB, 1 ;bitmask PORTB storing result in registers to clear lights
+Error[113]  : Symbol not previously defined (PORTB)
+002F   1400           00103     bsf PORTB, L3 ;turn on L3
+Warning[207]: Found label after column 1. (delaysec)
+Error[116]  : Address label duplicated or different in second pass (delaysec)
+0030                  00104     delaysec
+                      00105     ;if only G3 is active, go to SOK
+0030   300F           00106     movlw 0x0F ;binary 00001111
+Error[113]  : Symbol not previously defined (PORTA)
+0031   0500           00107     andwf PORTA, 0 ;bitmask PORTA storing result in wd
+0032   3A04           00108     xorlw 0x04 ;xor with 00000100 to see if only G3 active
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+0033   1800           00109     btfsc STATUS, Z ;if they are equal, go to SOK
+0034   2???           00110         goto SOK
+                      00111     ;otherwise, if no input is active, go to S4
+MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-16-2016  14:13:17         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0035   300F           00112     movlw 0x0F ;binary 00001111
+Error[113]  : Symbol not previously defined (PORTA)
+0036   0500           00113     andwf PORTA, 0 ;bitmask PORTA storing result in wd
+0037   3A00           00114     xorlw 0x00 ;xor with 0000 to see if no inputs active
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+0038   1800           00115     btfsc STATUS, Z ;if they are equal, go to S4
+0039   2???           00116         goto S4
+                      00117     ;otherwise go to SERR
+003A   2???           00118     goto SERR
+                      00119 
+003B                  00120 S4 ;S4 state
+                      00121     ;turn on only L4
+003B   3078           00122     movlw 0x78 ;binary 01111000
+Error[113]  : Symbol not previously defined (PORTB)
+003C   0580           00123     andwf PORTB, 1 ;bitmask PORTB storing result in registers to clear lights
+Error[113]  : Symbol not previously defined (PORTB)
+003D   1400           00124     bsf PORTB, L4 ;turn on L4
+Warning[207]: Found label after column 1. (delaysec)
+Error[116]  : Address label duplicated or different in second pass (delaysec)
+003E                  00125     delaysec
+                      00126     ;if only G4 is active, go to SOK
+003E   300F           00127     movlw 0x0F ;binary 00001111
+Error[113]  : Symbol not previously defined (PORTA)
+003F   0500           00128     andwf PORTA, 0 ;bitmask PORTA storing result in wd
+0040   3A08           00129     xorlw 0x08 ;xor with 00001000 to see if only G4 active
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+0041   1800           00130     btfsc STATUS, Z ;if they are equal, go to SOK
+0042   2???           00131         goto SOK
+                      00132     ;otherwise, if no input is active, go to S1
+0043   300F           00133     movlw 0x0F ;binary 00001111
+Error[113]  : Symbol not previously defined (PORTA)
+0044   0500           00134     andwf PORTA, 0 ;bitmask PORTA storing result in wd
+0045   3A00           00135     xorlw 0x00 ;xor with 00000000 to see if no inputs active
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+0046   1800           00136     btfsc STATUS, Z ;if they are equal, go to S1
+0047   2???           00137         goto S1
+                      00138     ;otherwise, go to SERR
+0048   2???           00139     goto SERR
+0049                  00140 SOK ;SOK state
+                      00141     ;turn all the lights off
+0049   3070           00142     movlw 0x70 ;binary 01110000
+Error[113]  : Symbol not previously defined (PORTB)
+004A   0580           00143     andwf PORTB, 1 ;bitmask PORTB storing result in registers to clear all lights
+Warning[207]: Found label after column 1. (delaysec)
+Error[116]  : Address label duplicated or different in second pass (delaysec)
+004B                  00144     delaysec
+                      00145     ; if any of the inputs is active, stay in SOK, otherwise go to S1
+004B   300F           00146     movlw 0x0F ;binary 00001111
+Error[113]  : Symbol not previously defined (PORTA)
+004C   0500           00147     andwf PORTA, 0 ;bitmask PORTA storing result in wd
+MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-16-2016  14:13:17         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+004D   3A00           00148     xorlw 0x00 ;xor with 00000000 to see if any inputs active
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+004E   1800           00149     btfsc STATUS, Z ;if all inputs are off, go to S1 state
+004F   2???           00150         goto S1
+                      00151     ;otherwise stay in SOK state
+0050   2???           00152     goto SOK
+                      00153 
+0051                  00154 SERR ;SERR state
+                      00155     ;set the ERR light on and all other lights off
+0051   30F0           00156     movlw 0xF0 ;binary 11110000
+Error[113]  : Symbol not previously defined (PORTB)
+0052   0580           00157     andwf PORTB, 1 ;bitmask PORTB storing result in registers to clear L1-L4
+Error[113]  : Symbol not previously defined (PORTB)
+0053   1400           00158     bsf PORTB, ERR ;and turn on the ERR light
+Warning[207]: Found label after column 1. (delaysec)
+Error[116]  : Address label duplicated or different in second pass (delaysec)
+0054                  00159     delaysec
+                      00160     ; if any of the inputs is active, stay in SERR, otherwise go to S1
+0054   300F           00161     movlw 0x0F ;binary 00001111
+Error[113]  : Symbol not previously defined (PORTA)
+0055   0500           00162     andwf PORTA, 0 ;bitmask PORTA storing result in wd
+0056   3A00           00163     xorlw 0x00 ;xor with 00000000 to see if any inputs active
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+0057   1800           00164     btfsc STATUS, Z ;if all inputs are off, go to S1 state
+0058   2???           00165         goto S1
+                      00166     ;otherwise stay in SERR state
+0059   2???           00167     goto SERR
+                      00168 
+Error[116]  : Address label duplicated or different in second pass (delaysec)
+                      00169 delaysec macro ;delay for 1 second
+                      00170     delay
+                      00171     delay
+                      00172     return
+                      00173 
+                      00174 delay macro ; create a delay of about 0.5 seconds
+                      00175         movlf d'16',octr ; initialize outer loop counter to 16
+                      00176 d1 macro
+                      00177     clrf        ictr    ; initialize inner loop counter to 256
+                      00178     return
+                      00179 d2 macro
+                      00180     decfsz      ictr,F  ; if (--ictr != 0) loop to d2
+                      00181         goto    d2
+                      00182         decfsz  octr,F  ; if (--octr != 0) loop to d1
+                      00183         goto    d1
+                      00184     return
+                      00185 
+                      00186 Init
+                      00187     clrf COUNT
+                      00188 IncCount
+                      00189     incf COUNT
+                      00190     movf COUNT,W
+MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-16-2016  14:13:17         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00191     movwf PORTB; display COUNT on PORTB
+                      00192 
+                      00193     call Delay
+                      00194     goto IncCount; infinite loop
+                      00195 
+                      00196 END ; directive 'end of program'
+Error[129]  : Expected (ENDM)
+Error[129]  : Expected (END)
+MPASM 5.61  /HOME/SIR/MPLABXPROJECTS/LOGICDE   12-16-2016  14:13:17         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+COUNT                             0000000E
+DVAR                              0000000F
+DVAR2                             00000010
+ERR                               00000000
+G1                                00000000
+G2                                00000000
+G3                                00000000
+G4                                00000000
+L1                                00000000
+L2                                00000000
+L3                                00000000
+L4                                00000000
+Main                              0000000C
+S1                                00000011
+S2                                0000001F
+S3                                0000002D
+S4                                0000003B
+SERR                              00000051
+SOK                               00000049
+__16F84A                          00000001
+delaysec                          00000014
+ictr                              00000012
+octr                              00000011
+status_temp                       0000000D
+w_temp                            0000000C
+
+Errors   :    71
+Warnings :     6 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+

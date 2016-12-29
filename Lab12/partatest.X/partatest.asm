@@ -11,11 +11,11 @@
 ;                                                                     *
 ;**********************************************************************
 ;                                                                     *
-;    Filename:	    tutorial.asm                                      *
-;    Date:                                                            *
-;    File Version:                                                    *
+;    Filename:	    parta.asm                                      *
+;    Date:          6 December 2016                                                          *
+;    File Version:  A                                                 *
 ;                                                                     *
-;    Author:                                                          *
+;    Author:	    Kimberly Almcrantz                                                    *
 ;    Company:                                                         *
 ;                                                                     *
 ;                                                                     *
@@ -39,63 +39,53 @@
 ; See respective data sheet for additional information on configuration word.
 
 ;***** VARIABLE DEFINITIONS
-;w_temp        EQU     0x0C        ; variable used for context saving
-;status_temp   EQU     0x0D        ; variable used for context saving
-;COUNT         EQU     0x0E
-;DVAR          EQU     0x0F
-;DVAR2         EQU     0x10
+w_temp        EQU     0x0C        ; variable used for context saving
+status_temp   EQU     0x0D        ; variable used for context saving
 
 ;**********************************************************************
-;		ORG     0x000             ; processor reset vector
-;  		goto    Main              ; go to beginning of program
+		ORG     0x000             ; processor reset vector
+  		goto    Main              ; go to beginning of program
 
 
-;		ORG     0x004             ; interrupt vector location
-;		movwf   w_temp            ; save off current W register contents
-;		movf	STATUS,w          ; move status register into W register
-;		movwf	status_temp       ; save off contents of STATUS register
+		ORG     0x004             ; interrupt vector location
+		movwf   w_temp            ; save off current W register contents
+		movf	STATUS,w          ; move status register into W register
+		movwf	status_temp       ; save off contents of STATUS register
 
 
 ; isr code can go here or be located as a call subroutine elsewhere
 
 
-;		movf    status_temp,w     ; retrieve copy of STATUS register
-;		movwf	STATUS            ; restore pre-isr STATUS register contents
-;		swapf   w_temp,f
-;		swapf   w_temp,w          ; restore pre-isr W register contents
-;		retfie                    ; return from interrupt
+		movf    status_temp,w     ; retrieve copy of STATUS register
+		movwf	STATUS            ; restore pre-isr STATUS register contents
+		swapf   w_temp,f
+		swapf   w_temp,w          ; restore pre-isr W register contents
+		retfie                    ; return from interrupt
 
 
 ; program code goes here
-;Main
-;    clrw
-;    movwf PORTB     ; clear PORTB
-;    bsf STATUS, RP0 ; switch to register bank 1
-;    movwf TRISB     ; configure PORTB as all outputs
-;    bcf STATUS, RP0 ; switch to register bank 0
+Main
+    clrw;
+    addlw 1;
+    addlw 1;
+    addlw 1;
+    addlw 1;
+    addlw 1;
+    addlw 1;
+    addlw 1;
+    addlw 1;
+    addlw 1;
+    addlw 1;
 
-;Init
-;    clrf COUNT
-;IncCount
-;    incf COUNT
-;    movf COUNT,W
-;    movwf PORTB; display COUNT on PORTB
+    addlw -3;
+    addlw -3;
+    addlw -3;
+    addlw -3;
 
-;    call Delay
-;    goto IncCount; infinite loop
+    xorlw 1;
 
-;Delay
-;    movlw 0x40; set outer delay loop
-;    movwf DVAR2
-;Delay0
-;    movlw 0xFF
-;    movwf DVAR; set inner delay loop
-;Delay1
-;    decfsz DVAR
-;    goto Delay1
-
-;    decfsz DVAR2
-;    goto Delay0
-;    return
-
+    fin:
+	goto fin;
 END ; directive 'end of program'
+
+
